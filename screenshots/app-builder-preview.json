@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Holdfast · 固守",
+      "hasCanvas": true,
+      "bodyTextLen": 380,
+      "bodyTextHash": "dab89e2bd93c08c7afdd3c3965f0de5254647254f5af1d27a195776a6083d24c",
+      "bodyTextPrefix": "固守 戰役 六條防線 · 星 0/18 1x HOLDFAST 固守 星 0/18 六條防線。點卡片預覽地圖，再點一次進攻。生命",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Holdfast · 固守",
+      "hasCanvas": true,
+      "bodyTextLen": 324,
+      "bodyTextHash": "24a2fc280b746c9879c027bba5b500a71a386dfcb4616ce1db0f2f9e47890ffe",
+      "bodyTextPrefix": "戰役 六條防線 · 星 0/18 1x HOLDFAST 固守 星 0/18 六條防線。點卡片預覽地圖，再點一次進攻。生命剩六成",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}
