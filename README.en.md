@@ -1,6 +1,8 @@
 # Holdfast · 固守
 
-**English** | [繁體中文](README.md)
+[繁體中文](README.md) | **English**
+
+**[Live Demo / 線上展示](https://zinc-wind-tundra-stone.grok.me/)**
 
 A browser tower-defense game. Place towers along a moss-stone keep, stop insect waves, unlock the next line, and earn stars from remaining lives.
 
@@ -75,8 +77,8 @@ public/
 Requires [Node.js 22](https://nodejs.org/).
 
 ```bash
-git clone https://github.com/richie7p/zinc-wind-tundra-stone.git
-cd zinc-wind-tundra-stone
+git clone https://github.com/richie7p/Holdfast.git
+cd Holdfast
 npm install
 npm run dev
 ```

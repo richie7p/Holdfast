@@ -2,6 +2,8 @@
 
 **繁體中文** | [English](README.en.md)
 
+**[線上展示 / Live Demo](https://zinc-wind-tundra-stone.grok.me/)**
+
 瀏覽器塔防遊戲：在苔石防線上放置防禦塔，擋住一波波襲來的甲蟲軍團。通關解鎖下一線，生命比例決定星等。
 
 ![戰役選擇畫面](screenshots/campaign.png)
@@ -75,8 +77,8 @@ public/
 需要 [Node.js 22](https://nodejs.org/)。
 
 ```bash
-git clone https://github.com/richie7p/zinc-wind-tundra-stone.git
-cd zinc-wind-tundra-stone
+git clone https://github.com/richie7p/Holdfast.git
+cd Holdfast
 npm install
 npm run dev
 ```
