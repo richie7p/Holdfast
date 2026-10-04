@@ -108,7 +108,7 @@ export class GameEngine {
   }
 
   startStage(index: number): void {
-    if (index > this.unlocked) return;
+    if (!Number.isInteger(index) || index < 0 || index >= STAGES.length || index > this.unlocked) return;
     this.stageIndex = index;
     applyStage(this.stage);
     this.resetSim();

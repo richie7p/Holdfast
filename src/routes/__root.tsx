@@ -1,3 +1,4 @@
+import { SaveNotice } from "@/game/save-tools";
 import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
 import { AuthProvider } from "@/lib/auth/provider";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
@@ -34,6 +35,7 @@ export const Route = createRootRoute({
       </head>
       <body className="bg-bg text-fg overflow-hidden h-dvh">
         <PreviewHostBridge />
+        <SaveNotice />
         <AuthProvider>
           <Outlet />
         </AuthProvider>

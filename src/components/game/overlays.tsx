@@ -1,3 +1,5 @@
+import { SaveTools } from "@/game/save-tools";
+import { parseProgress, saveProgress } from "@/game/progress";
 import { Heart, Landmark, Lock, Star, Swords } from "lucide-react";
 import type { ReactNode } from "react";
 import { unlockAudio } from "@/game/audio";
@@ -121,6 +123,7 @@ export function Overlays() {
           六條防線。點卡片預覽地圖，再點一次進攻。生命剩六成得三星。
         </p>
 
+        <SaveTools value={{ unlocked, stars }} parse={parseProgress} filename="holdfast-progress.json" restore={(next) => { if (!saveProgress(next)) return false; engine.unlocked = next.unlocked; engine.stars = next.stars; engine.gotoSelect(); return true; }} />
         <Chapter title="外圍" stages={outer} unlocked={unlocked} stageIndex={stageIndex} stars={stars} offset={0} />
         <Chapter title="深處" stages={deep} unlocked={unlocked} stageIndex={stageIndex} stars={stars} offset={3} />
 

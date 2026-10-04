@@ -56,7 +56,6 @@ export function pathProgress(waypoint: number, x: number, y: number): number {
   if (waypoint >= WAYPOINTS.length - 1) return 1;
   let traveled = 0;
   for (let i = 0; i < waypoint; i++) traveled += SEGMENT_LEN[i] ?? 0;
-  const from = WAYPOINTS[waypoint]!;
   const to = WAYPOINTS[waypoint + 1]!;
   const seg = SEGMENT_LEN[waypoint] ?? 1;
   const distToNext = Math.hypot(to.x - x, to.y - y);
