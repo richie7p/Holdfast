@@ -1,6 +1,7 @@
+import { readStored, writeStored } from "./storage";
 import { STAGES } from "./stages";
 
-const KEY = "holdfast-progress-v2";
+export const KEY = "holdfast-progress-v2";
 const LEGACY = "holdfast-progress-v1";
 const N = STAGES.length;
 
@@ -9,30 +10,25 @@ export interface Progress {
   stars: number[];
 }
 
-function padStars(stars: number[] | undefined): number[] {
-  return Array.from({ length: N }, (_, i) => Math.max(0, Math.min(3, stars?.[i] ?? 0)));
+function bounded(value: unknown, max: number) {
+  return typeof value === "number" && Number.isFinite(value) ? Math.max(0, Math.min(max, Math.floor(value))) : 0;
 }
-
+function padStars(stars: unknown): number[] {
+  return Array.from({ length: N }, (_, i) => bounded(Array.isArray(stars) ? stars[i] : 0, 3));
+}
+export function parseProgress(text: string): Progress {
+  const parsed: unknown = JSON.parse(text);
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed) || !("stars" in parsed) || !Array.isArray(parsed.stars)) throw new Error("Invalid progress");
+  const raw = parsed as Partial<Progress>;
+  return { unlocked: bounded(raw.unlocked, N - 1), stars: padStars(raw.stars) };
+}
 export function loadProgress(): Progress {
-  try {
-    const raw = localStorage.getItem(KEY) ?? localStorage.getItem(LEGACY);
-    if (!raw) return { unlocked: 0, stars: padStars([]) };
-    const parsed = JSON.parse(raw) as Progress;
-    return {
-      unlocked: Math.max(0, Math.min(N - 1, parsed.unlocked ?? 0)),
-      stars: padStars(parsed.stars),
-    };
-  } catch {
-    return { unlocked: 0, stars: padStars([]) };
-  }
+  return readStored(KEY, KEY + ".bak", parseProgress)
+    ?? readStored(LEGACY, LEGACY + ".bak", parseProgress)
+    ?? { unlocked: 0, stars: padStars([]) };
 }
-
-export function saveProgress(next: Progress): void {
-  try {
-    localStorage.setItem(KEY, JSON.stringify(next));
-  } catch {
-    /* ignore */
-  }
+export function saveProgress(next: Progress): boolean {
+  return writeStored(KEY, KEY + ".bak", next, parseProgress);
 }
 
 export function starsFromLives(lives: number, startLives: number): number {
@@ -45,6 +41,8 @@ export function starsFromLives(lives: number, startLives: number): number {
 
 export function recordWin(stageIndex: number, stars: number): Progress {
   const cur = loadProgress();
+  if (!Number.isInteger(stageIndex) || stageIndex < 0 || stageIndex >= N) return cur;
+  stars = bounded(stars, 3);
   const nextStars = padStars(cur.stars);
   nextStars[stageIndex] = Math.max(nextStars[stageIndex] ?? 0, stars);
   const unlocked = Math.max(cur.unlocked, Math.min(N - 1, stageIndex + 1));
