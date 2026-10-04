@@ -33,3 +33,9 @@ test("wave schedule is ordered, starts only once, and pause freezes game clock",
 test("all stages resolve wins after final enemy and losses with zero lives",()=>{
  memory(); for(let i=0;i<STAGES.length;i++){const e=new GameEngine();e.unlocked=STAGES.length-1;e.startStage(i);e.wave=e.totalWaves;e.spawnQueue=[];e.fixedUpdate(1/60);assert.equal(e.phase,"won");const lost=new GameEngine();lost.startStage(0);lost.lives=0;lost.fixedUpdate(1/60);assert.equal(lost.phase,"lost");}
 });
+
+test("newer progress cannot be imported or silently overwritten",()=>{
+ const data=memory();const future=JSON.stringify({version:99,unlocked:5,stars:[3,3,3]});data.set(KEY,future);
+ assert.throws(()=>parseProgress(future));assert.equal(saveProgress({unlocked:0,stars:[]}),false);assert.equal(data.get(KEY),future);
+ assert.equal(parseProgress('{"unlocked":1,"stars":[3]}').version,2);
+});

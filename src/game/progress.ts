@@ -6,6 +6,7 @@ const LEGACY = "holdfast-progress-v1";
 const N = STAGES.length;
 
 export interface Progress {
+  version?: number;
   unlocked: number;
   stars: number[];
 }
@@ -20,15 +21,16 @@ export function parseProgress(text: string): Progress {
   const parsed: unknown = JSON.parse(text);
   if (!parsed || typeof parsed !== "object" || Array.isArray(parsed) || !("stars" in parsed) || !Array.isArray(parsed.stars)) throw new Error("Invalid progress");
   const raw = parsed as Partial<Progress>;
-  return { unlocked: bounded(raw.unlocked, N - 1), stars: padStars(raw.stars) };
+  if (raw.version !== undefined && (!Number.isInteger(raw.version) || raw.version < 1 || raw.version > 2)) throw new Error("Unsupported progress version");
+  return { version: 2, unlocked: bounded(raw.unlocked, N - 1), stars: padStars(raw.stars) };
 }
 export function loadProgress(): Progress {
   return readStored(KEY, KEY + ".bak", parseProgress)
     ?? readStored(LEGACY, LEGACY + ".bak", parseProgress)
-    ?? { unlocked: 0, stars: padStars([]) };
+    ?? { version: 2, unlocked: 0, stars: padStars([]) };
 }
 export function saveProgress(next: Progress): boolean {
-  return writeStored(KEY, KEY + ".bak", next, parseProgress);
+  return writeStored(KEY, KEY + ".bak", { ...next, version: 2 }, parseProgress);
 }
 
 export function starsFromLives(lives: number, startLives: number): number {
@@ -46,7 +48,7 @@ export function recordWin(stageIndex: number, stars: number): Progress {
   const nextStars = padStars(cur.stars);
   nextStars[stageIndex] = Math.max(nextStars[stageIndex] ?? 0, stars);
   const unlocked = Math.max(cur.unlocked, Math.min(N - 1, stageIndex + 1));
-  const next = { unlocked, stars: nextStars };
+  const next = { version: 2, unlocked, stars: nextStars };
   saveProgress(next);
   return next;
 }
